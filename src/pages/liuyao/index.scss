@@ -1,0 +1,52 @@
+.liuyao-tip {
+  margin-top: 10px;
+}
+
+.hexagram-panel {
+  margin: 14px 0;
+  padding: 10px 0;
+}
+
+.yao-row {
+  display: grid;
+  grid-template-columns: 58px 1fr;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.yao-index {
+  color: #607568;
+  font-size: 12px;
+}
+
+.yao-line {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  height: 26px;
+}
+
+.yao-line View,
+.yao-line view {
+  height: 10px;
+  flex: 1;
+  border-radius: 2px;
+  background: #173221;
+}
+
+.yao-line.empty View,
+.yao-line.empty view {
+  background: #cbd5e1;
+}
+
+.yao-line.yang {
+  gap: 0;
+}
+
+.yao-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}

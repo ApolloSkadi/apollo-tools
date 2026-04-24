@@ -1,0 +1,156 @@
+page {
+  min-height: 100%;
+  background: #f7fbf8;
+  color: #15231b;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.page {
+  min-height: 100vh;
+  padding: 18px 16px 36px;
+  box-sizing: border-box;
+}
+
+.hero {
+  padding: 18px 0 12px;
+}
+
+.eyebrow {
+  color: #5f7f70;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.title {
+  margin-top: 5px;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.subtitle {
+  margin-top: 8px;
+  color: #607568;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.section-title {
+  margin: 22px 0 10px;
+  color: #24382c;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.tool-card,
+.panel,
+.history-item {
+  background: #ffffff;
+  border: 1px solid #e2ece5;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(42, 75, 54, 0.06);
+}
+
+.tool-card {
+  display: block;
+  margin-bottom: 12px;
+  padding: 16px;
+}
+
+.tool-card__title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.tool-card__desc {
+  margin-top: 5px;
+  color: #6a7e70;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.panel {
+  margin-top: 12px;
+  padding: 16px;
+}
+
+.field {
+  margin-bottom: 14px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 6px;
+  color: #33443a;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  min-height: 42px;
+  padding: 0 12px;
+  box-sizing: border-box;
+  border: 1px solid #cfddd4;
+  border-radius: 8px;
+  background: #ffffff;
+  font-size: 14px;
+}
+
+.textarea {
+  min-height: 86px;
+  padding-top: 10px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.row-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.muted {
+  color: #6a7e70;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.result-title {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.result-text {
+  margin-top: 7px;
+  color: #425548;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.history-item {
+  margin-top: 10px;
+  padding: 12px;
+}
+
+.history-item__title {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.history-item__meta {
+  margin-top: 4px;
+  color: #6a7e70;
+  font-size: 12px;
+}
+
+.nut-button {
+  min-height: 34px;
+  border-radius: 8px;
+  font-size: 14px;
+}

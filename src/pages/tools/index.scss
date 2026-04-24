@@ -1,0 +1,56 @@
+.tool-group {
+  margin-top: 8px;
+}
+
+.tool-list {
+  overflow: hidden;
+  border: 1px solid #e2ece5;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(42, 75, 54, 0.05);
+}
+
+.tool-list-item {
+  display: grid;
+  grid-template-columns: 38px 1fr 18px;
+  gap: 10px;
+  align-items: center;
+  min-height: 60px;
+  padding: 10px 12px;
+  border-bottom: 1px solid #eef4f0;
+  box-sizing: border-box;
+}
+
+.tool-list-item:last-child {
+  border-bottom: 0;
+}
+
+.tool-list-item__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: #f0f8f3;
+  font-size: 19px;
+}
+
+.tool-list-item__title {
+  color: #182b20;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.tool-list-item__desc {
+  margin-top: 3px;
+  color: #6a7e70;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.tool-list-item__arrow {
+  color: #94a99b;
+  font-size: 24px;
+  line-height: 1;
+}
