@@ -1,3 +1,6 @@
+/* ------------------------------------------------
+   Liuyao — Layout
+   ------------------------------------------------ */
 .liuyao-tip {
   margin-top: 10px;
 }
@@ -7,6 +10,9 @@
   padding: 10px 0;
 }
 
+/* ------------------------------------------------
+   Yao lines
+   ------------------------------------------------ */
 .yao-row {
   display: grid;
   grid-template-columns: 58px 1fr;
@@ -15,8 +21,17 @@
   margin-bottom: 12px;
 }
 
+.yao-row--reveal {
+  animation: yaoReveal 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes yaoReveal {
+  0%   { opacity: 0; transform: translateX(-12px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
 .yao-index {
-  color: #607568;
+  color: #707070;
   font-size: 12px;
 }
 
@@ -32,12 +47,13 @@
   height: 10px;
   flex: 1;
   border-radius: 2px;
-  background: #173221;
+  background: #2c2c2c;
+  transition: background 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .yao-line.empty View,
 .yao-line.empty view {
-  background: #cbd5e1;
+  background: #d1d1d1;
 }
 
 .yao-line.yang {
@@ -49,4 +65,205 @@
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+}
+
+/* ------------------------------------------------
+   Coin stage — container
+   ------------------------------------------------ */
+.coin-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 12px 0 8px;
+  padding: 18px 12px 14px;
+  border: 1px solid #dedede;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 6px 18px rgba(44, 44, 44, 0.06);
+  animation: coinStageEnter 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.coin-stage--done {
+  animation: coinStageDone 0.6s 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes coinStageEnter {
+  0%   { opacity: 0; transform: translateY(-8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes coinStageDone {
+  0%   { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.95) translateY(-4px); }
+}
+
+.coin-stage__hint {
+  margin-bottom: 12px;
+  color: #707070;
+  font-size: 13px;
+  font-weight: 600;
+  animation: hintPulse 1s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+
+@keyframes hintPulse {
+  0%, 100% { opacity: 0.5; }
+  50%      { opacity: 1; }
+}
+
+/* ------------------------------------------------
+   Coin tray — 3 coins in a row
+   ------------------------------------------------ */
+.coin-tray {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+/* ------------------------------------------------
+   Individual coin
+   ------------------------------------------------ */
+.coin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.coin__face {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #f0e6d2 0%, #e8d5b0 40%, #d4b87a 100%);
+  box-shadow:
+    0 3px 8px rgba(44, 44, 44, 0.18),
+    inset 0 1px 2px rgba(255, 255, 255, 0.5);
+  transition: box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.coin__value {
+  font-size: 20px;
+  font-weight: 800;
+  color: #5a4a32;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.4);
+}
+
+/* Flipping state */
+.coin--flipping .coin__face {
+  animation: coinFlip 0.16s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+
+@keyframes coinFlip {
+  0%   { transform: scaleY(1); }
+  50%  { transform: scaleY(0.1); }
+  100% { transform: scaleY(1); }
+}
+
+/* Settled state */
+.coin--settled .coin__face {
+  animation: coinLand 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes coinLand {
+  0%   { transform: scaleY(0.1); box-shadow: 0 3px 8px rgba(44, 44, 44, 0.18), inset 0 1px 2px rgba(255, 255, 255, 0.5); }
+  40%  { transform: scaleY(1.15); box-shadow: 0 6px 16px rgba(44, 44, 44, 0.22), inset 0 1px 2px rgba(255, 255, 255, 0.5); }
+  70%  { transform: scaleY(0.92); }
+  100% { transform: scaleY(1); box-shadow: 0 4px 10px rgba(44, 44, 44, 0.2), inset 0 1px 2px rgba(255, 255, 255, 0.5); }
+}
+
+/* Done — subtle glow */
+.coin--done .coin__face {
+  box-shadow:
+    0 4px 12px rgba(44, 44, 44, 0.22),
+    0 0 0 4px rgba(212, 184, 122, 0.2),
+    inset 0 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.coin__yao-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #707070;
+  animation: yaoLabelReveal 0.25s 0.1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes yaoLabelReveal {
+  0%   { opacity: 0; transform: translateY(-4px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* ------------------------------------------------
+   Coin result — sum display
+   ------------------------------------------------ */
+.coin-result {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  animation: coinResultReveal 0.4s 0.15s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.coin-result--done {
+  animation: coinResultDone 0.6s 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes coinResultReveal {
+  0%   { opacity: 0; transform: scale(0.7); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes coinResultDone {
+  0%   { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.8); }
+}
+
+.coin-result__sum {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  background: #2c2c2c;
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.coin-result__name {
+  color: #2c2c2c;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* ------------------------------------------------
+   Accessibility
+   ------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  .coin--flipping .coin__face {
+    animation: none;
+  }
+
+  .coin--settled .coin__face {
+    animation: none;
+  }
+
+  .coin-result {
+    animation: none;
+  }
+
+  .coin-stage {
+    animation: none;
+  }
+
+  .yao-row--reveal {
+    animation: none;
+  }
+
+  .coin-stage__hint {
+    animation: none;
+    opacity: 1;
+  }
 }

@@ -1,27 +1,42 @@
 import React, { useState } from 'react'
+import Taro from '@tarojs/taro'
 import { Input, Picker, Textarea, View } from '@tarojs/components'
 import { Button } from '@nutui/nutui-react-taro'
 import { useAppStore } from '../../store/useAppStore'
-import { calculateXiaoLiuRen } from '../../utils/divination'
+import { calculateXiaoLiuRen, parseDivinationNumbers } from '../../utils/divination'
 import './index.scss'
 
-const methods = ['时间起卦', '随机起卦']
+const methods = ['时间起卦', '随机起卦', '数字起卦']
 
 function XiaoLiuRen() {
   const addHistory = useAppStore((state) => state.addHistory)
   const [event, setEvent] = useState('')
   const [methodIndex, setMethodIndex] = useState(0)
   const [dateTime, setDateTime] = useState('')
+  const [numberText, setNumberText] = useState('')
   const [result, setResult] = useState(null)
 
   const submit = () => {
+    const method = methods[methodIndex]
+    const numbers = parseDivinationNumbers(numberText)
+
+    if (method === '数字起卦' && !numbers.length) {
+      Taro.showToast({ title: '请输入数字', icon: 'none' })
+      return
+    }
+
     const next = calculateXiaoLiuRen({
       event,
-      method: methods[methodIndex],
+      method,
       dateTime,
+      numbers,
     })
     setResult(next)
-    addHistory('xiaoliuren', { title: `${next.event}：${next.name}`, detail: next.advice })
+    addHistory('xiaoliuren', {
+      title: `${next.event}：${next.name}`,
+      detail: next.advice,
+      payload: next,
+    })
   }
 
   return (
@@ -42,6 +57,13 @@ function XiaoLiuRen() {
             <View className='picker-value'>{methods[methodIndex]}</View>
           </Picker>
         </View>
+        {methods[methodIndex] === '数字起卦' && (
+          <View className='field'>
+            <View className='label'>数字</View>
+            <Input className='input' value={numberText} placeholder='例如：3, 8, 16，多个数字用逗号分隔' onInput={(event) => setNumberText(event.detail.value)} />
+            <View className='field-tip'>会将输入的数字相加后取小六壬六宫。</View>
+          </View>
+        )}
         <View className='field'>
           <View className='label'>日期时间</View>
           <Input className='input' value={dateTime} placeholder='留空则使用当前时间，如 2026-04-24 10:30' onInput={(event) => setDateTime(event.detail.value)} />

@@ -4,10 +4,10 @@
 
 .tool-list {
   overflow: hidden;
-  border: 1px solid #e2ece5;
+  border: 1px solid #dedede;
   border-radius: 8px;
   background: #ffffff;
-  box-shadow: 0 8px 20px rgba(42, 75, 54, 0.05);
+  box-shadow: 0 8px 20px rgba(44, 44, 44, 0.05);
 }
 
 .tool-list-item {
@@ -17,7 +17,7 @@
   align-items: center;
   min-height: 60px;
   padding: 10px 12px;
-  border-bottom: 1px solid #eef4f0;
+  border-bottom: 1px solid #eeeeee;
   box-sizing: border-box;
 }
 
@@ -32,25 +32,25 @@
   width: 34px;
   height: 34px;
   border-radius: 8px;
-  background: #f0f8f3;
+  background: #f2f2f2;
   font-size: 19px;
 }
 
 .tool-list-item__title {
-  color: #182b20;
+  color: #2c2c2c;
   font-size: 16px;
   font-weight: 700;
 }
 
 .tool-list-item__desc {
   margin-top: 3px;
-  color: #6a7e70;
+  color: #707070;
   font-size: 12px;
   line-height: 1.4;
 }
 
 .tool-list-item__arrow {
-  color: #94a99b;
+  color: #9a9a9a;
   font-size: 24px;
   line-height: 1;
 }

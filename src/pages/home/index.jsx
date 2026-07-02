@@ -4,7 +4,7 @@ import { View, Text } from '@tarojs/components'
 import './index.scss'
 
 const tools = [
-  { title: '动态转盘', desc: '自定义选项、权重、旋转动画与结果历史。', url: '/pages/wheel/index' },
+  { title: '转盘', desc: '自定义选项、权重、旋转动画与结果历史。', url: '/pages/wheel/index' },
   { title: '小六壬', desc: '按事件、起卦方式和日期时间生成卦象建议。', url: '/pages/xiaoliuren/index' },
   { title: '六爻', desc: '支持手动摇卦和随机起卦，生成本卦、变卦、动爻。', url: '/pages/liuyao/index' },
 ]
@@ -14,7 +14,7 @@ function Home() {
     <View className='page'>
       <View className='hero'>
         <Text className='eyebrow'>Apollo Tools</Text>
-        <View className='title'>个人工具小程序</View>
+        <View className='title'>什么都有的小程序</View>
         <View className='subtitle'>把日常决策、灵感选择和卜卦记录收在一个轻量入口里。</View>
       </View>
 

@@ -1,3 +1,6 @@
+/* ------------------------------------------------
+   Wheel — Layout
+   ------------------------------------------------ */
 .wheel-wrap {
   position: relative;
   display: flex;
@@ -5,6 +8,28 @@
   margin: 8px 0 18px;
 }
 
+.wheel-mode-panel {
+  margin-bottom: 16px;
+}
+
+.wheel-mode-field {
+  margin-bottom: 0;
+}
+
+.picker-value {
+  min-height: 42px;
+  padding: 10px 12px;
+  box-sizing: border-box;
+  border: 1px solid #d5d5d5;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #2c2c2c;
+  font-size: 14px;
+}
+
+/* ------------------------------------------------
+   Wheel — The disc
+   ------------------------------------------------ */
 .wheel {
   position: relative;
   width: 260px;
@@ -15,12 +40,34 @@
   overflow: hidden;
   border: 8px solid #ffffff;
   border-radius: 9999px;
-  box-shadow: 0 14px 32px rgba(42, 75, 54, 0.16);
-  transition: transform 2.6s cubic-bezier(0.12, 0.72, 0.18, 1);
+  box-shadow: 0 14px 32px rgba(44, 44, 44, 0.16);
+  transition: transform 2.4s cubic-bezier(0.12, 0.72, 0.18, 1);
+  will-change: transform;
 }
 
+/* Spin phase — smooth deceleration */
+.wheel--spinning {
+  transition: transform 2.4s cubic-bezier(0.08, 0.76, 0.14, 1);
+}
+
+/* Settle phase — quick wobble after spin stops */
+.wheel--settling {
+  animation: wheelSettle 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@keyframes wheelSettle {
+  0%   { transform: var(--settle-from, rotate(0deg)); }
+  30%  { transform: var(--settle-overshoot, rotate(0deg)); }
+  60%  { transform: var(--settle-bounce, rotate(0deg)); }
+  100% { transform: var(--settle-to, rotate(0deg)); }
+}
+
+/* ------------------------------------------------
+   Wheel — Center hub
+   ------------------------------------------------ */
 .wheel-center {
   position: absolute;
+  z-index: 2;
   left: 50%;
   top: 50%;
   display: flex;
@@ -30,24 +77,64 @@
   height: 66px;
   border-radius: 9999px;
   background: #ffffff;
-  color: #111827;
+  color: #2c2c2c;
   font-size: 26px;
   font-weight: 700;
   transform: translate(-50%, -50%);
-  box-shadow: 0 5px 14px rgba(42, 75, 54, 0.14);
+  box-shadow: 0 5px 14px rgba(44, 44, 44, 0.14);
+  transition: box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.wheel--spinning .wheel-center {
+  box-shadow: 0 0 0 8px rgba(44, 44, 44, 0.06), 0 5px 14px rgba(44, 44, 44, 0.14);
+}
+
+/* ------------------------------------------------
+   Wheel — Labels
+   ------------------------------------------------ */
+.wheel-label {
+  position: absolute;
+  z-index: 1;
+  width: 72px;
+  overflow: hidden;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------
+   Wheel — Pointer
+   ------------------------------------------------ */
 .wheel-pointer {
   position: absolute;
-  z-index: 2;
+  z-index: 3;
   top: -1px;
   width: 0;
   height: 0;
   border-left: 13px solid transparent;
   border-right: 13px solid transparent;
-  border-top: 30px solid #214832;
+  border-top: 30px solid #2c2c2c;
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Pointer pulses during spin */
+.wheel-pointer--active {
+  animation: pointerTick 0.15s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+
+@keyframes pointerTick {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(3px); }
+}
+
+/* ------------------------------------------------
+   Result banner
+   ------------------------------------------------ */
 .result-banner {
   display: grid;
   grid-template-columns: 48px 1fr;
@@ -55,10 +142,21 @@
   align-items: center;
   margin-top: 14px;
   padding: 14px;
-  border: 1px solid #bfe8cb;
+  border: 1px solid #d5d5d5;
   border-radius: 8px;
-  background: #effaf2;
-  box-shadow: 0 10px 22px rgba(42, 75, 54, 0.08);
+  background: #f7f7f7;
+  box-shadow: 0 10px 22px rgba(44, 44, 44, 0.08);
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.result-banner--enter {
+  opacity: 1;
+  transform: translateY(0);
+  box-shadow: 0 12px 28px rgba(44, 44, 44, 0.12);
 }
 
 .result-banner__emoji {
@@ -70,16 +168,27 @@
   border-radius: 9999px;
   background: #ffffff;
   font-size: 27px;
+  animation: emojiPop 0.45s 0.15s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.result-banner--enter .result-banner__emoji {
+  animation: emojiPop 0.45s 0.15s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes emojiPop {
+  0%   { transform: scale(0.3); opacity: 0; }
+  60%  { transform: scale(1.15); }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 .result-banner__label {
-  color: #5c7a66;
+  color: #707070;
   font-size: 12px;
 }
 
 .result-banner__title {
   margin-top: 2px;
-  color: #173221;
+  color: #2c2c2c;
   font-size: 22px;
   font-weight: 800;
   line-height: 1.25;
@@ -87,10 +196,13 @@
 
 .result-banner__text {
   margin-top: 4px;
-  color: #5c7a66;
+  color: #707070;
   font-size: 12px;
 }
 
+/* ------------------------------------------------
+   Options & Presets
+   ------------------------------------------------ */
 .option-row {
   display: grid;
   grid-template-columns: 1fr 64px 46px;
@@ -101,4 +213,79 @@
 
 .option-weight {
   text-align: center;
+}
+
+.save-preset-panel {
+  display: grid;
+  grid-template-columns: 1fr 128px;
+  gap: 8px;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.preset-preview {
+  overflow: hidden;
+  border: 1px solid #dedede;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.preset-preview-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 46px;
+  padding: 9px 12px;
+  border-bottom: 1px solid #eeeeee;
+  box-sizing: border-box;
+}
+
+.preset-preview-item:last-child {
+  border-bottom: 0;
+}
+
+.preset-preview-item__name {
+  min-width: 0;
+  overflow: hidden;
+  color: #2c2c2c;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.preset-preview-item__weight {
+  flex: 0 0 auto;
+  color: #707070;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/* ------------------------------------------------
+   Accessibility
+   ------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  .wheel {
+    transition: none;
+  }
+
+  .wheel--settling {
+    animation: none;
+  }
+
+  .wheel-pointer--active {
+    animation: none;
+  }
+
+  .result-banner {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .result-banner__emoji {
+    animation: none;
+  }
 }

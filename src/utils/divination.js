@@ -52,21 +52,44 @@ const lineText = {
 
 const getHourBranchIndex = (date) => Math.floor(((date.getHours() + 1) % 24) / 2)
 
-export const calculateXiaoLiuRen = ({ event, method, dateTime }) => {
+const normalizeNumbers = (numbers = []) =>
+  numbers
+    .map((item) => Number(item))
+    .filter((item) => Number.isFinite(item))
+
+export const parseDivinationNumbers = (value = '') =>
+  value
+    .split(/[,，\s]+/)
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .map((item) => Number(item))
+    .filter((item) => Number.isFinite(item))
+
+export const calculateXiaoLiuRen = ({ event, method, dateTime, numbers = [] }) => {
   const date = dateTime ? new Date(dateTime) : new Date()
   const month = date.getMonth() + 1
   const day = date.getDate()
   const hourIndex = getHourBranchIndex(date) + 1
+  const normalizedNumbers = normalizeNumbers(numbers)
+  const numberSeed = normalizedNumbers.reduce((sum, item) => sum + Math.abs(Math.trunc(item)), 0)
   const seed = method === '随机起卦'
     ? Math.floor(Math.random() * 36) + 1
-    : month + day + hourIndex
+    : method === '数字起卦' && numberSeed > 0
+      ? numberSeed
+      : month + day + hourIndex
   const palace = xiaoLiuRenPalaces[(seed - 1) % xiaoLiuRenPalaces.length]
+  const formula = method === '随机起卦'
+    ? `随机数 ${seed}`
+    : method === '数字起卦'
+      ? `${normalizedNumbers.join(' + ')} = ${seed}`
+      : `${month}月 + ${day}日 + ${hourIndex}时辰`
 
   return {
     event: event || '未命名事件',
     method,
     dateText: `${date.getFullYear()}-${month}-${day} ${hourBranchNames[hourIndex - 1]}时`,
-    formula: method === '随机起卦' ? `随机数 ${seed}` : `${month}月 + ${day}日 + ${hourIndex}时辰`,
+    formula,
+    numbers: normalizedNumbers,
     ...palace,
   }
 }

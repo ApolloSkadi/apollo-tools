@@ -1,6 +1,7 @@
 import Taro from '@tarojs/taro'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
+import { createWheelPresetGroup, defaultWheelOptions, defaultWheelPresetGroups } from '../utils/wheelPresets'
 
 const taroStorage = {
   getItem: (name) => {
@@ -23,17 +24,32 @@ const keepRecent = (items, limit = 50) => items.slice(0, limit)
 export const useAppStore = create(
   persist(
     (set) => ({
-      wheelOptions: [
-        { id: '1', label: '选项 A', weight: 1 },
-        { id: '2', label: '选项 B', weight: 1 },
-        { id: '3', label: '选项 C', weight: 1 },
-      ],
+      wheelOptions: defaultWheelOptions,
+      wheelPresetGroups: defaultWheelPresetGroups,
       histories: {
         wheel: [],
         xiaoliuren: [],
         liuyao: [],
       },
       setWheelOptions: (wheelOptions) => set({ wheelOptions }),
+      addWheelPresetGroup: (name, options) =>
+        set((state) => ({
+          wheelPresetGroups: [createWheelPresetGroup(name, options), ...(state.wheelPresetGroups || [])],
+        })),
+      importWheelPresetGroups: (groups) =>
+        set((state) => ({
+          wheelPresetGroups: [...groups, ...(state.wheelPresetGroups || [])],
+        })),
+      updateWheelPresetGroup: (id, patch) =>
+        set((state) => ({
+          wheelPresetGroups: (state.wheelPresetGroups || []).map((item) =>
+            item.id === id ? { ...item, ...patch } : item
+          ),
+        })),
+      removeWheelPresetGroup: (id) =>
+        set((state) => ({
+          wheelPresetGroups: (state.wheelPresetGroups || []).filter((item) => item.id !== id),
+        })),
       addWheelOption: () =>
         set((state) => ({
           wheelOptions: [
