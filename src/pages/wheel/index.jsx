@@ -1,4 +1,16 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
+
+/* Generate deterministic confetti particles — fixed seed per result for consistency */
+const CONFETTI_COLORS = ['#f9c86a', '#f7a4a4', '#b8a3ff', '#93c5fd', '#84cc9a', '#f0abfc', '#ffb347', '#7dd3c7']
+const genConfetti = (seed, count = 24) =>
+  Array.from({ length: count }, (_, i) => {
+    const angle = (i / count) * 360 + (seed * 17) % 37
+    const distance = 60 + (i * 13 + seed * 7) % 80
+    const size = 5 + (i * 3 + seed) % 6
+    const rotation = (i * 43 + seed * 23) % 360
+    const delay = (i / count) * 0.35
+    return { angle, distance, size, rotation, delay, color: CONFETTI_COLORS[i % CONFETTI_COLORS.length] }
+  })
 import { Input, Picker, View } from '@tarojs/components'
 import { Button } from '@nutui/nutui-react-taro'
 import { useAppStore } from '../../store/useAppStore'
@@ -39,6 +51,7 @@ function Wheel() {
   const [spinning, setSpinning] = useState(false)
   const [result, setResult] = useState(null)
   const [resultEnter, setResultEnter] = useState(false)
+  const [confettiSeed, setConfettiSeed] = useState(0)
   const [modeIndex, setModeIndex] = useState(0)
   const [presetIndex, setPresetIndex] = useState(0)
   const [presetName, setPresetName] = useState('')
@@ -102,11 +115,16 @@ function Wheel() {
     if (spinning || !validOptions.length) return
     const picked = getWeightedResult(validOptions)
     const range = wheelData.ranges.find((item) => item.id === picked.id)
-    const targetAngle = 360 - (range?.middleAngle || 0)
-    const nextRotation = rotation + 1440 + targetAngle
+    // Compute the incremental rotation needed to land on the target segment.
+    // targetVisual = where the pointer should point in screen space (0° = top).
+    const targetVisual = (360 - (range?.middleAngle || 0)) % 360
+    const currentVisual = rotation % 360
+    const delta = (targetVisual - currentVisual + 360) % 360 || 360
+    const nextRotation = rotation + 1440 + delta
     setSpinning(true)
     setResult(null)
     setResultEnter(false)
+    setConfettiSeed(Math.floor(Math.random() * 100))
     setRotation(nextRotation)
 
     // Main spin: 2.4s deceleration, then reveal
@@ -180,6 +198,21 @@ function Wheel() {
       <Button block type='primary' loading={spinning} onClick={start}>{spinning ? '转动中' : '✨ 开始转动'}</Button>
       {result && (
         <View className={`result-banner ${resultEnter ? 'result-banner--enter' : ''}`}>
+          {/* Confetti burst */}
+          {resultEnter && genConfetti(confettiSeed).map((c, i) => (
+            <View
+              className='confetti'
+              key={i}
+              style={{
+                '--angle': `${c.angle}deg`,
+                '--distance': `${c.distance}px`,
+                '--size': `${c.size}px`,
+                '--rotation': `${c.rotation}deg`,
+                '--delay': `${c.delay}s`,
+                backgroundColor: c.color,
+              }}
+            />
+          ))}
           <View className='result-banner__emoji'>🎉</View>
           <View className='result-banner__content'>
             <View className='result-banner__label'>结果是</View>

@@ -98,7 +98,7 @@ function LiuYao() {
               next[i] = true
               return next
             })
-            // Last coin settled → apply the yao line
+            // Last coin settled → apply the yao line, then fade out and reset
             if (i === targets.length - 1) {
               settleTimers.current.push(setTimeout(() => {
                 setCoinPhase('done')
@@ -109,6 +109,12 @@ function LiuYao() {
                     return next
                   })
                 }
+                // Reset to idle after the "done" fade-out animation (0.5s delay + 0.6s duration)
+                settleTimers.current.push(setTimeout(() => {
+                  setCoinPhase('idle')
+                  setPendingYao(null)
+                  setPendingIndex(-1)
+                }, 1200))
               }, 250))
             }
           }, i * 200))

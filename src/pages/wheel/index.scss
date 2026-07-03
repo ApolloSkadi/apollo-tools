@@ -50,18 +50,6 @@
   transition: transform 2.4s cubic-bezier(0.08, 0.76, 0.14, 1);
 }
 
-/* Settle phase — quick wobble after spin stops */
-.wheel--settling {
-  animation: wheelSettle 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-@keyframes wheelSettle {
-  0%   { transform: var(--settle-from, rotate(0deg)); }
-  30%  { transform: var(--settle-overshoot, rotate(0deg)); }
-  60%  { transform: var(--settle-bounce, rotate(0deg)); }
-  100% { transform: var(--settle-to, rotate(0deg)); }
-}
-
 /* ------------------------------------------------
    Wheel — Center hub
    ------------------------------------------------ */
@@ -136,6 +124,7 @@
    Result banner
    ------------------------------------------------ */
 .result-banner {
+  position: relative;
   display: grid;
   grid-template-columns: 48px 1fr;
   gap: 12px;
@@ -147,6 +136,7 @@
   background: #f7f7f7;
   box-shadow: 0 10px 22px rgba(44, 44, 44, 0.08);
   opacity: 0;
+  overflow: visible;
   transform: translateY(16px);
   transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
               transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
@@ -198,6 +188,39 @@
   margin-top: 4px;
   color: #707070;
   font-size: 12px;
+}
+
+/* ------------------------------------------------
+   Confetti — burst from result banner
+   ------------------------------------------------ */
+.confetti {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: 40%;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 2px;
+  opacity: 0;
+  animation: confettiBurst 0.9s var(--delay) cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes confettiBurst {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(0deg) translate(0, 0);
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform:
+      translate(-50%, -50%)
+      rotate(var(--rotation))
+      translateX(var(--distance))
+      translateY(calc(var(--distance) * -0.45));
+  }
 }
 
 /* ------------------------------------------------
@@ -271,10 +294,6 @@
     transition: none;
   }
 
-  .wheel--settling {
-    animation: none;
-  }
-
   .wheel-pointer--active {
     animation: none;
   }
@@ -287,5 +306,9 @@
 
   .result-banner__emoji {
     animation: none;
+  }
+
+  .confetti {
+    display: none;
   }
 }
