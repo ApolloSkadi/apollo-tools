@@ -1,0 +1,85 @@
+.approval-groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.approval-group {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 12px;
+  border: 1px solid #ececec;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: #4d4d4d;
+  font-size: 13px;
+}
+
+.approval-group--active {
+  border-color: #2c2c2c;
+  background: #f6f6f6;
+}
+
+.approval-group__name {
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.approval-groups__empty {
+  color: #9a9a9a;
+  font-size: 13px;
+}
+
+.group-member-note {
+  margin-top: 10px;
+  color: #707070;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.approval-create__submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 46px;
+  margin-top: 18px;
+  border-radius: 10px;
+  background: #2c2c2c;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+/* ---- 分类标签选择 ---- */
+.cat-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cat-tag {
+  padding: 7px 14px;
+  border: 1px solid #dedede;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: #6f6f6f;
+  font-size: 13px;
+  transition: all 0.2s var(--ease-out-quart, ease);
+}
+
+.cat-tag--active {
+  border-color: #2c2c2c;
+  background: #2c2c2c;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.cat-tags__hint {
+  margin-top: 8px;
+  color: #9a9a9a;
+  font-size: 11px;
+  line-height: 1.5;
+}

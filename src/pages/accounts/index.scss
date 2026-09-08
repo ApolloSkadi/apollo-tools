@@ -1,0 +1,164 @@
+.accounts-total {
+  margin-top: 6px;
+  font-size: 34px;
+  font-weight: 700;
+  color: #2c2c2c;
+  letter-spacing: 0.5px;
+}
+
+.accounts-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.accounts-action {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 12px 0;
+  border: 1px solid #dedede;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(44, 44, 44, 0.06);
+  color: #2c2c2c;
+  font-size: 14px;
+  transition: all 0.2s var(--ease-out-quart, ease);
+}
+
+.accounts-action--active {
+  background: #2c2c2c;
+  border-color: #2c2c2c;
+  color: #ffffff;
+}
+
+
+.accounts-type-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.accounts-type {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 13px;
+  border: 1px solid #dedede;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: #6f6f6f;
+  font-size: 13px;
+}
+
+.accounts-type--active {
+  border-color: #2c2c2c;
+  background: #2c2c2c;
+  color: #ffffff;
+}
+
+.accounts-type--in.accounts-type--active {
+  border-color: #2f8a5b;
+  background: #2f8a5b;
+}
+
+.accounts-submit {
+  margin-top: 6px;
+  padding: 12px 0;
+  border-radius: 10px;
+  background: #2c2c2c;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.accounts-hint {
+  margin-top: 10px;
+  color: #9a9a9a;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.account-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  margin-bottom: 10px;
+  border: 1px solid #dedede;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(44, 44, 44, 0.06);
+}
+
+.account-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+}
+
+.account-card__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.account-card__name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #2c2c2c;
+}
+
+.account-card__meta {
+  margin-top: 3px;
+  color: #8a8a8a;
+  font-size: 12px;
+}
+
+.account-card__balance {
+  font-size: 16px;
+  font-weight: 700;
+  color: #2c2c2c;
+}
+
+.account-card__balance--neg {
+  color: #c25543;
+}
+
+.transfer-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  margin-bottom: 8px;
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.transfer-item__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.transfer-item__title {
+  color: #2c2c2c;
+  font-size: 13px;
+}
+
+.transfer-item__time {
+  margin-top: 2px;
+  color: #9a9a9a;
+  font-size: 11px;
+}
+
+.transfer-item__amount {
+  color: #2f8a5b;
+  font-size: 14px;
+  font-weight: 700;
+}

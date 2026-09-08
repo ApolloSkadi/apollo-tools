@@ -1,1 +1,346 @@
+/* ---- Shared panel ---- */
+.home-panel {
+  margin-top: 14px;
+  padding: 16px;
+  border: 1px solid #dedede;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(44, 44, 44, 0.06);
+}
 
+.home-panel__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.home-panel__title {
+  color: #2c2c2c;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.home-panel__badge {
+  margin-left: auto;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  background: #f0f0f0;
+  color: #6f6f6f;
+  font-size: 11px;
+}
+
+.home-panel__more {
+  margin-left: auto;
+  color: #9a9a9a;
+  font-size: 12px;
+}
+
+.home-cta {
+  display: inline-block;
+  margin-top: 12px;
+  color: #5a4f8a;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ---- Ledger theme ---- */
+.home-ledger-summary {
+  margin-top: 12px;
+  padding: 18px 16px;
+  border-radius: 14px;
+  background: #23262b;
+  color: #ffffff;
+  box-shadow: 0 12px 28px rgba(35, 38, 43, 0.22);
+}
+
+.home-ledger-summary__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.home-ledger-summary__num {
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.home-ledger-summary__num--income {
+  color: #9fd9bf;
+}
+
+.home-ledger-summary__num--expense {
+  color: #f3a8bf;
+}
+
+.home-ledger-summary__label {
+  margin-top: 4px;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 11px;
+}
+
+.home-ledger-summary__cta {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.home-ledger-summary__btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 40px;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #2c2c2c;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.home-ledger-summary__btn--ghost {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.home-trend {
+  width: 100%;
+  height: 120px;
+  margin-top: 12px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.home-ledger-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+  padding: 12px;
+  border: 1px solid #dedede;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(44, 44, 44, 0.05);
+}
+
+.home-ledger-item__icon {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+}
+
+.home-ledger-item__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.home-ledger-item__title {
+  color: #2c2c2c;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.home-ledger-item__meta {
+  margin-top: 3px;
+  color: #9a9a9a;
+  font-size: 12px;
+}
+
+.home-ledger-item__amount {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.home-ledger-item__amount--income {
+  color: #2F8A5B;
+}
+
+.home-ledger-item__amount--expense {
+  color: #C1406F;
+}
+
+/* ---- Divination theme ---- */
+.home-divination-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.home-divination-card {
+  padding: 14px;
+  border: 1px solid #ececec;
+  border-radius: 12px;
+  background: #faf9fc;
+  transition: transform 0.2s var(--ease-out-expo), box-shadow 0.2s var(--ease-out-expo);
+}
+
+.home-divination-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #efeaf8;
+}
+
+.home-divination-card__title {
+  margin-top: 10px;
+  color: #2c2c2c;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.home-divination-card__desc {
+  margin-top: 4px;
+  color: #707070;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.home-divination-latest__title {
+  margin-top: 12px;
+  color: #2c2c2c;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.home-divination-latest__detail {
+  margin-top: 6px;
+  color: #4d4d4d;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.home-divination-latest__time {
+  margin-top: 6px;
+  color: #9a9a9a;
+  font-size: 12px;
+}
+
+/* ---- Approval theme ---- */
+.home-approval-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.home-approval-stat {
+  text-align: center;
+}
+
+.home-approval-stat__num {
+  color: #2c2c2c;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.home-approval-stat__num--accent {
+  color: #b0563f;
+  font-size: 15px;
+}
+
+.home-approval-stat__label {
+  margin-top: 4px;
+  color: #707070;
+  font-size: 11px;
+}
+
+.home-approval-bar {
+  display: flex;
+  height: 8px;
+  margin-top: 14px;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: #ececec;
+}
+
+.home-approval-bar__fill {
+  background: #2c2c2c;
+}
+
+.home-approval-bar__empty {
+  background: #e0a294;
+}
+
+.home-approval-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+  padding: 14px;
+  border: 1px solid #dedede;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(44, 44, 44, 0.05);
+}
+
+.home-approval-item__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.home-approval-item__title {
+  color: #2c2c2c;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.home-approval-item__meta {
+  margin-top: 4px;
+  color: #707070;
+  font-size: 12px;
+}
+
+.home-approval-item__badge {
+  flex: 0 0 auto;
+  padding: 3px 8px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+.home-approval-item__badge--pending {
+  background: #efefef;
+  color: #6f6f6f;
+}
+
+.home-approval-item__badge--approved {
+  background: #e3efe7;
+  color: #2f6a48;
+}
+
+.home-approval-item__badge--rejected {
+  background: #f6e4de;
+  color: #a14a30;
+}
+
+.home-page {
+  padding-bottom: 40px;
+}
+
+/* ---- 每日一言 ---- */
+.home-quote__text {
+  margin-top: 14px;
+  color: #2c2c2c;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.home-quote__from {
+  margin-top: 8px;
+  text-align: right;
+  color: #9a9a9a;
+  font-size: 12px;
+}

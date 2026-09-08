@@ -1,0 +1,118 @@
+/* ---- Stats ---- */
+.approval-stats {
+  margin-top: 12px;
+  padding: 16px;
+  border: 1px solid #dedede;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(44, 44, 44, 0.06);
+}
+
+.approval-stats__row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.approval-stat {
+  min-width: 0;
+  text-align: center;
+}
+
+.approval-stat__num {
+  color: #2c2c2c;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.approval-stat__num--accent {
+  color: #b0563f;
+  font-size: 15px;
+}
+
+.approval-stat__label {
+  margin-top: 4px;
+  color: #707070;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.approval-stats__bar {
+  display: flex;
+  height: 8px;
+  margin-top: 14px;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: #ececec;
+}
+
+.approval-stats__bar-fill {
+  background: #2c2c2c;
+}
+
+.approval-stats__bar-empty {
+  background: #e0a294;
+}
+
+.approval-fab {
+  margin-top: 16px;
+}
+
+/* ---- Item list ---- */
+.approval-item {
+  margin-bottom: 12px;
+  padding: 16px;
+  border: 1px solid #dedede;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(44, 44, 44, 0.06);
+}
+
+.approval-item__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.approval-item__title {
+  color: #2c2c2c;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.approval-item__price {
+  margin-top: 8px;
+  color: #2c2c2c;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.approval-item__meta {
+  margin-top: 5px;
+  color: #707070;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* ---- 未登录提示：文字 + 登录按钮 同行垂直居中 ---- */
+.approval-login-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid #dedede;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(44, 44, 44, 0.06);
+}
+
+.approval-login-row__text {
+  flex: 1;
+  color: #6f6f6f;
+  font-size: 13px;
+  line-height: 1.5;
+}

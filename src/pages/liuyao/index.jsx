@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { View } from '@tarojs/components'
+import Taro, { useReady } from '@tarojs/taro'
+import { Canvas, View } from '@tarojs/components'
 import { Button } from '@nutui/nutui-react-taro'
+import { CANVAS_ID, createCoinScene } from './coinScene'
 import { useAppStore } from '../../store/useAppStore'
 import { calculateLiuYao, createRandomYao } from '../../utils/divination'
 import './index.scss'
@@ -49,6 +51,64 @@ function LiuYao() {
   const flipInterval = useRef(null)
   const settleTimers = useRef([])
 
+  /* ---- three.js 3D 硬币 ---- */
+  const [toss, setToss] = useState(null)   // { seq, targets } | null
+  const [coinGlFailed, setCoinGlFailed] = useState(false) // WebGL 不可用时回退 CSS 硬币
+  const sceneRef = useRef(null)
+  const tossRef = useRef(null)
+
+  /* 页面就绪后初始化 WebGL 场景；canvas 节点可能晚于页面 ready，带重试 */
+  const initCanvas = useCallback(() => {
+    if (sceneRef.current) return
+    let tries = 0
+    const attempt = () => {
+      if (sceneRef.current) return
+      tries += 1
+      Taro.createSelectorQuery()
+        .select(`#${CANVAS_ID}`)
+        .node()
+        .exec((res) => {
+          const canvas = res && res[0] && res[0].node
+          if (!canvas) {
+            if (tries >= 5) setCoinGlFailed(true)
+            else setTimeout(attempt, 200)
+            return
+          }
+          try {
+            const sys = Taro.getSystemInfoSync()
+            sceneRef.current = createCoinScene(canvas, {
+              width: sys.windowWidth - 32,
+              height: 230,
+            })
+            if (tossRef.current) sceneRef.current.applyToss(tossRef.current.targets)
+          } catch (e) {
+            setCoinGlFailed(true)
+          }
+        })
+    }
+    attempt()
+  }, [])
+
+  useReady(() => {
+    initCanvas()
+  })
+
+  useEffect(() => {
+    return () => {
+      if (sceneRef.current) {
+        sceneRef.current.dispose()
+        sceneRef.current = null
+      }
+    }
+  }, [])
+
+  /* toss.seq 变化 → 触发一次投掷 */
+  useEffect(() => {
+    if (!toss) return
+    tossRef.current = toss
+    if (sceneRef.current) sceneRef.current.applyToss(toss.targets)
+  }, [toss && toss.seq])
+
   /* ---- multi-line (randomAll) animation ---- */
   const [batchLines, setBatchLines] = useState(null)          // all 6 lines being revealed
   const [batchRevealed, setBatchRevealed] = useState(0)        // how many have been revealed
@@ -76,6 +136,7 @@ function LiuYao() {
     setPendingYao(yaoValue)
     setPendingIndex(lineIndex)
     setCoinPhase('flipping')
+    setToss((prev) => ({ seq: (prev ? prev.seq : 0) + 1, targets }))
 
     // Rapid flip: cycle random coin values every 80ms for ~900ms
     const start = Date.now()
@@ -132,6 +193,7 @@ function LiuYao() {
     setBatchLines(nextLines)
     setBatchRevealed(0)
     setCoinPhase('flipping')
+    setToss((prev) => ({ seq: (prev ? prev.seq : 0) + 1, targets: decomposeYao(nextLines[0]) }))
 
     // Reveal lines one by one with stagger
     nextLines.forEach((yaoValue, i) => {
@@ -211,53 +273,38 @@ function LiuYao() {
         <View className='muted liuyao-tip'>当前已生成 {filledCount}/6 爻</View>
       </View>
 
-      {/* ---- Coin animation area ---- */}
-      {(coinPhase === 'flipping' || coinPhase === 'settling') && (
-        <View className='coin-stage'>
-          <View className='coin-stage__hint'>
-            {coinPhase === 'flipping' ? '摇币中…' : '定爻中…'}
-          </View>
+      {/* ---- Coin animation area（three.js 3D，canvas 常驻挂载；WebGL 不可用时回退 CSS 硬币） ---- */}
+      <View className='coin-stage' style={coinPhase === 'idle' ? { display: 'none' } : undefined}>
+        <View className='coin-stage__hint'>
+          {coinPhase === 'flipping' ? '摇币中…' : coinPhase === 'settling' ? '定爻中…' : coinPhase === 'done' ? '本爻结果' : '点击「手动摇一爻」或「随机起卦」'}
+        </View>
+        {!coinGlFailed ? (
+          <Canvas
+            type='webgl'
+            id={CANVAS_ID}
+            style={{ width: '100%', height: '230px', borderRadius: '12px' }}
+          />
+        ) : (
           <View className='coin-tray'>
             {[0, 1, 2].map((i) => (
               <View
                 key={i}
-                className={`coin ${coinPhase === 'settling' && coinSettled[i] ? 'coin--settled' : ''} ${coinPhase === 'flipping' ? 'coin--flipping' : ''}`}
+                className={`coin ${coinPhase === 'done' ? 'coin--settled coin--done' : coinPhase === 'settling' && coinSettled[i] ? 'coin--settled' : 'coin--flipping'}`}
               >
                 <View className='coin__face'>
                   <View className='coin__value'>{coinLabel(coinDisplay[i])}</View>
                 </View>
-                {coinPhase === 'settling' && coinSettled[i] && (
-                  <View className='coin__yao-label'>{coinDisplay[i] === 3 ? '阳' : '阴'}</View>
-                )}
               </View>
             ))}
           </View>
-          {coinPhase === 'settling' && coinSettled.every(Boolean) && pendingYao !== null && (
-            <View className='coin-result'>
-              <View className='coin-result__sum'>{pendingYao}</View>
-              <View className='coin-result__name'>{yaoNames[pendingYao]}</View>
-            </View>
-          )}
-        </View>
-      )}
-      {/* coinPhase === 'done' → brief flash, then clear */}
-      {coinPhase === 'done' && (
-        <View className='coin-stage coin-stage--done'>
-          <View className='coin-tray'>
-            {[0, 1, 2].map((i) => (
-              <View key={i} className='coin coin--settled coin--done'>
-                <View className='coin__face'>
-                  <View className='coin__value'>{coinLabel(coinTargets[i])}</View>
-                </View>
-              </View>
-            ))}
-          </View>
-          <View className='coin-result coin-result--done'>
+        )}
+        {((coinPhase === 'settling' && coinSettled.every(Boolean)) || coinPhase === 'done') && pendingYao !== null && (
+          <View className={`coin-result ${coinPhase === 'done' ? 'coin-result--done' : ''}`}>
             <View className='coin-result__sum'>{pendingYao}</View>
             <View className='coin-result__name'>{yaoNames[pendingYao]}</View>
           </View>
-        </View>
-      )}
+        )}
+      </View>
 
       {/* ---- Hexagram lines ---- */}
       <View className='hexagram-panel'>

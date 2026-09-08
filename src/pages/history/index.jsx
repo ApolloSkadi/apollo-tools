@@ -8,6 +8,7 @@ const historyTypes = {
   wheel: '转盘',
   xiaoliuren: '小六壬',
   liuyao: '六爻',
+  tarot: '今日运势',
 }
 
 const formatTime = (value) => {
@@ -34,6 +35,13 @@ const getDetailRows = (record) => {
       ['卦象', payload.name],
       ['解释', payload.meaning],
       ['建议', payload.advice]
+    )
+  } else if (record.type === 'tarot' && payload.past) {
+    rows.push(
+      ['过去牌', payload.past.name],
+      ['现在牌', payload.present.name],
+      ['未来牌', payload.future.name],
+      ['解读', record.detail]
     )
   } else {
     rows.push(['详情', record.detail])
@@ -63,7 +71,7 @@ function History() {
 
       <View className='panel'>
         <View className='result-title'>{records.length} 条记录</View>
-        <View className='result-text'>转盘 {histories.wheel.length} 条，小六壬 {histories.xiaoliuren.length} 条，六爻 {histories.liuyao.length} 条。</View>
+        <View className='result-text'>转盘 {histories.wheel.length} 条，小六壬 {histories.xiaoliuren.length} 条，六爻 {histories.liuyao.length} 条，今日运势 {histories.tarot.length} 条。</View>
         <View className='mine-actions'>
           <Button type='danger' fill='outline' onClick={() => clearHistory()}>清空全部历史</Button>
         </View>

@@ -1,0 +1,40 @@
+.join-preview {
+  margin-top: 12px;
+  padding: 14px;
+  border: 1px solid #dedede;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(44, 44, 44, 0.06);
+}
+
+.join-preview__label {
+  color: #9a9a9a;
+  font-size: 12px;
+}
+
+.join-preview__name {
+  margin-top: 6px;
+  color: #2c2c2c;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.join-preview__code {
+  margin-top: 4px;
+  color: #707070;
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+
+.join-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 46px;
+  margin-top: 16px;
+  border-radius: 10px;
+  background: #2c2c2c;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+}

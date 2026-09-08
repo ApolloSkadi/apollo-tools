@@ -1,0 +1,11 @@
+.reicon {
+  display: inline-block;
+  flex: 0 0 auto;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+}
+
+.reicon--empty {
+  background-image: none;
+}

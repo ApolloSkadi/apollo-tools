@@ -1,0 +1,54 @@
+.tabbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  background: #ffffff;
+  border-top: 1px solid #e3e3e3;
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.tabbar__inner {
+  display: flex;
+  align-items: stretch;
+  height: 58px;
+}
+
+.tabbar__item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
+
+.tabbar__text {
+  color: #9a9a9a;
+  font-size: 10px;
+  line-height: 1.2;
+  transition: color 0.2s var(--ease-out-quart, ease);
+}
+
+.tabbar__text--active {
+  font-weight: 600;
+}
+
+/* 中间的「+」动作按钮：上浮圆形，与 tab 图标区分 */
+.tabbar__action {
+  width: 44px;
+  height: 44px;
+  margin-top: -18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 16px rgba(44, 44, 44, 0.22);
+  transition: transform 0.2s var(--ease-out-quart, ease);
+}
+
+.tabbar__item:active .tabbar__action {
+  transform: scale(0.92);
+}
