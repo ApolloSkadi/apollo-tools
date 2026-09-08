@@ -5,7 +5,6 @@ export const apiWechatLogin = (code) => httpPost('/auth/wechat-login', { code })
 export const apiLogout = () => httpPost('/auth/logout')
 export const apiGetMe = () => httpGet('/users/me')
 export const apiUpdateMe = (patch) => httpPatch('/users/me', patch)
-export const apiFriends = () => httpGet('/users/friends')
 
 // ---- groups ----
 export const apiCreateGroup = (payload) => httpPost('/groups', payload)
@@ -13,7 +12,7 @@ export const apiMyGroups = () => httpGet('/groups/mine')
 export const apiGroupDetail = (groupId) => httpGet(`/groups/${groupId}`)
 export const apiGroupByCode = (code) => httpGet(`/groups/by-code/${code}`)
 export const apiJoinGroup = (code) => httpPost('/groups/join', { code })
-export const apiInviteGroup = (groupId, memberIds) => httpPost(`/groups/${groupId}/invite`, { memberIds })
+export const apiGroupApprovals = (groupId) => httpGet(`/approvals/by-group/${groupId}`)
 
 // ---- approvals ----
 export const apiCreateApproval = (payload) => httpPost('/approvals', payload)

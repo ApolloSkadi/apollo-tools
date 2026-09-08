@@ -68,6 +68,17 @@
   font-weight: 700;
 }
 
+/* 原生分享按钮：去掉微信 button 默认样式，视觉对齐 .group-action */
+.group-action--share {
+  margin: 0;
+  padding: 0;
+  line-height: 1.4;
+}
+
+.group-action--share::after {
+  border: none;
+}
+
 .group-members {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -230,4 +241,42 @@
   color: #ffffff;
   font-size: 15px;
   font-weight: 700;
+}
+
+/* 群组下的审批列表：与「审批记录」页样式保持一致 */
+.approval-item {
+  margin-bottom: 12px;
+  padding: 16px;
+  border: 1px solid #dedede;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(44, 44, 44, 0.06);
+}
+
+.approval-item__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.approval-item__title {
+  color: #2c2c2c;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.approval-item__price {
+  margin-top: 8px;
+  color: #2c2c2c;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.approval-item__meta {
+  margin-top: 5px;
+  color: #707070;
+  font-size: 12px;
+  line-height: 1.5;
 }

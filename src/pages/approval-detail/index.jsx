@@ -1,15 +1,16 @@
 import React, { useMemo, useState } from 'react'
-import Taro, { useDidShow } from '@tarojs/taro'
-import { View, Image } from '@tarojs/components'
+import Taro, { useDidShow, useShareAppMessage } from '@tarojs/taro'
+import { View, Image, Text, Button as NativeButton } from '@tarojs/components'
 import { Button } from '@nutui/nutui-react-taro'
 import { useAppStore } from '../../store/useAppStore'
 import {
   formatPrice,
   formatTime,
+  needForCount,
   ITEM_STATUS_TEXT,
   MEMBER_STATUS_TEXT,
 } from '../../utils/approval'
-import { apiApprovalDetail, apiFriends, apiInviteGroup } from '../../services/api'
+import { apiApprovalDetail, apiGroupDetail } from '../../services/api'
 import { API_BASE_URL } from '../../config'
 import './index.scss'
 
@@ -24,9 +25,7 @@ function ApprovalDetail() {
   const [decisions, setDecisions] = useState([])
   const [images, setImages] = useState([])
   const [missing, setMissing] = useState(false)
-  const [showInvite, setShowInvite] = useState(false)
-  const [candidates, setCandidates] = useState([])
-  const [invitedIds, setInvitedIds] = useState([])
+  const [groupCode, setGroupCode] = useState('')
 
   const itemStat = useMemo(() => {
     const total = decisions.length
@@ -55,6 +54,14 @@ function ApprovalDetail() {
       setApproval(res.approval || null)
       setDecisions(res.decisions || [])
       setImages(res.images || [])
+      if (res.approval && res.approval.groupId) {
+        try {
+          const g = await apiGroupDetail(res.approval.groupId)
+          setGroupCode((g.group && g.group.code) || '')
+        } catch (e) { /* 群组码获取失败不影响详情 */ }
+      } else {
+        setGroupCode('')
+      }
     } catch (e) {
       if (e.code === 404) setMissing(true)
       else Taro.showToast({ title: e.message || '加载失败', icon: 'none' })
@@ -65,6 +72,16 @@ function ApprovalDetail() {
   useDidShow(() => {
     load()
   })
+
+  // 微信分享卡片：邀请好友进群（经由群组码 group-join）
+  useShareAppMessage(() => ({
+    title: approval && approval.groupName ? `邀请你加入「${approval.groupName}」一起审` : '邀请你加入审核群',
+    path: groupCode
+      ? `/pages/group-join/index?groupCode=${groupCode}`
+      : approval
+        ? `/pages/approval-detail/index?id=${approval.id}`
+        : '',
+  }))
 
   const goReview = () => {
     Taro.navigateTo({ url: `/pages/approval-review/index?approvalId=${approvalId}` })
@@ -77,29 +94,6 @@ function ApprovalDetail() {
       : approval.status === 'approved'
         ? '审批已通过，放心入手吧'
         : `还有 ${itemStat.pending} 位待决定`
-
-  const toggleInvite = async () => {
-    const next = !showInvite
-    setShowInvite(next)
-    if (!next) return
-    try {
-      const { friends } = await apiFriends()
-      setCandidates(friends || [])
-    } catch (e) {
-      Taro.showToast({ title: e.message || '好友列表加载失败', icon: 'none' })
-    }
-  }
-
-  const inviteFriend = async (friend) => {
-    if (!approval || !approval.groupId) return
-    try {
-      await apiInviteGroup(approval.groupId, [friend.id])
-      setInvitedIds((prev) => [...prev, friend.id])
-      Taro.showToast({ title: '已邀请进群', icon: 'success' })
-    } catch (e) {
-      Taro.showToast({ title: e.message || '邀请失败', icon: 'none' })
-    }
-  }
 
   if (missing || (!approval && !missing)) {
     return (
@@ -149,6 +143,9 @@ function ApprovalDetail() {
         <View className='approval-detail__meta'>
           <View className='approval-detail__tag'>{approval.category || '其他'}</View>
           <Text>{approval.publisherName || '—'} 发布于 {formatTime(approval.createdAt)}</Text>
+        </View>
+        <View className='approval-detail__rule'>
+          需 {needForCount(decisions.length, approval.needCount)} 人通过 · 已 {itemStat.approved} 票通过 / {itemStat.rejected} 票驳回
         </View>
         <View className='approval-detail__result'>{decidedLabel}</View>
       </View>
@@ -212,38 +209,24 @@ function ApprovalDetail() {
         )}
       </View>
 
-      {/* ---- Invite to group ---- */}
+      {/* ---- Invite to group (微信邀请卡片) ---- */}
       {approval.groupId ? (
         <View className='approval-detail__actions'>
-          <Button block fill='outline' type='primary' onClick={toggleInvite}>
-            {showInvite ? '收起邀请' : '邀请好友进群'}
-          </Button>
-        </View>
-      ) : null}
-
-      {showInvite && approval.groupId ? (
-        <View className='invite-panel'>
-          {candidates.length ? (
-            <View className='friend-select'>
-              {candidates.map((friend) => {
-                const invited = invitedIds.includes(friend.id)
-                return (
-                  <View
-                    className={`friend-chip ${invited ? 'friend-chip--invited' : 'friend-chip--active'}`}
-                    key={friend.id}
-                    onClick={() => { if (!invited) inviteFriend(friend) }}
-                  >
-                    <View className='friend-chip__avatar'>{(friend.nickname || '?').slice(0, 1)}</View>
-                    <View className='friend-chip__name'>{friend.nickname}</View>
-                    <View className='friend-chip__check'>{invited ? '✓' : '+'}</View>
-                  </View>
-                )
-              })}
-            </View>
-          ) : (
-            <View className='empty-state'>暂无可邀请的好友</View>
-          )}
-          <View className='approval-detail__hint'>新成员加入群组；本次审批名单已在发布时确定。</View>
+          <NativeButton
+            openType='share'
+            style={{
+              width: '100%',
+              borderRadius: 8,
+              border: '1px solid #2c2c2c',
+              color: '#2c2c2c',
+              background: 'transparent',
+              marginTop: 8,
+              fontSize: 14,
+            }}
+          >
+            微信邀请好友
+          </NativeButton>
+          <View className='approval-detail__hint'>把卡片转发给好友，对方点开就能进群。</View>
         </View>
       ) : null}
     </View>

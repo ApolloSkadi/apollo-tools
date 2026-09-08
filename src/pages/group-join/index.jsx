@@ -39,14 +39,17 @@ function GroupJoin() {
       }
       const byCode = await apiGroupByCode(c)
       setPreview(byCode.group)
-      const { group } = await apiJoinGroup(c)
+      await apiJoinGroup(c)
       const { groups } = await apiMyGroups()
       setMyGroups(groups)
       Taro.showToast({ title: '已加入群组', icon: 'success' })
-      Taro.redirectTo({ url: `/pages/group/index?groupId=${group.id}` })
+      // 邀请链接加入 / 手动加入成功后，都回到首页
+      Taro.switchTab({ url: '/pages/home/index' })
     } catch (e) {
       Taro.showToast({ title: e.message || '加入失败', icon: 'none' })
       setJoining(false)
+      // 已加入过该群组：同样视为「已在群内」，回到首页
+      if (e.code === 409) Taro.switchTab({ url: '/pages/home/index' })
     }
   }
 

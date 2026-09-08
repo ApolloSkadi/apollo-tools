@@ -344,3 +344,29 @@
   color: #9a9a9a;
   font-size: 12px;
 }
+
+.home-page {
+  position: relative;
+}
+
+.home-theme-toggle {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: #2c2c2c;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+}
+
+.home-theme-toggle__arrow {
+  font-size: 14px;
+  line-height: 1;
+}

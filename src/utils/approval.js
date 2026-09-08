@@ -28,7 +28,7 @@ export const FRIEND_POOL = [
 ]
 
 // 物品分类
-export const APPROVAL_CATEGORIES = ['数码', '服饰', '家居', '美食', '出行', '其他']
+export const APPROVAL_CATEGORIES = ['数码', '服饰', '家居', '美食', '出行', '生活', '其他']
 
 // 状态文案
 export const MEMBER_STATUS_TEXT = {
@@ -43,14 +43,24 @@ export const ITEM_STATUS_TEXT = {
   rejected: '已驳回',
 }
 
-// 根据好友决定推导整个物品的最终状态
-// 采用「一票否决」：只要有人驳回即驳回；全部决定且无人驳回则通过；否则审批中
-export function deriveItemStatus(members = []) {
+// 通过所需人数：needCount>0 用指定值；否则默认「超过审批人数的 50%」-> floor(total/2)+1
+export function needForCount(total = 0, needCount = 0) {
+  if (total <= 0) return 0
+  return needCount > 0 ? Math.min(needCount, total) : Math.floor(total / 2) + 1
+}
+
+// 根据成员决定推导整个物品的最终状态（非一票否决）
+// 通过：通过人数 >= need；驳回：即使剩余全部通过也无法达到 need；否则审批中
+export function deriveItemStatus(members = [], needCount = 0) {
   if (!members || !members.length) return 'pending'
-  const decided = members.filter((m) => m.status !== 'pending')
-  if (!decided.length) return 'pending'
-  if (decided.some((m) => m.status === 'rejected')) return 'rejected'
-  return 'approved'
+  const total = members.length
+  const approved = members.filter((m) => m.status === 'approved').length
+  const rejected = members.filter((m) => m.status === 'rejected').length
+  const needed = needForCount(total, needCount)
+  if (needed === 0) return 'pending'
+  if (approved >= needed) return 'approved'
+  if (rejected > total - needed) return 'rejected'
+  return 'pending'
 }
 
 // 计算某物品的审批统计

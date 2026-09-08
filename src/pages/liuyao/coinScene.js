@@ -95,10 +95,12 @@ export function createCoinScene(canvas, { width, height }) {
   let running = true
   let renderFailures = 0
 
-  const loop = (ts) => {
+  const loop = () => {
     if (!running) return
     try {
-      const now = typeof ts === 'number' && ts > 0 ? ts : Date.now()
+      // 统一用 Date.now() 作为时间基准，避免 rAF 时间戳（相对时间原点）与
+      // applyToss 里的 startedAt（epoch 毫秒）不一致，导致 progress 恒为 0 而不动。
+      const now = Date.now()
       if (spin) {
         coins.forEach((coin, i) => {
           const { startedAt, duration, finalX, height } = spin[i]

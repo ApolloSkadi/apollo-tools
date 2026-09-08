@@ -3,7 +3,7 @@ import Taro from '@tarojs/taro'
 import { Input, Textarea, View, Text, Image } from '@tarojs/components'
 import Reicon from '../../components/Reicon'
 import { useAppStore } from '../../store/useAppStore'
-import { APPROVAL_CATEGORIES } from '../../utils/approval'
+import { APPROVAL_CATEGORIES, needForCount } from '../../utils/approval'
 import { apiMyGroups, apiGroupDetail, apiCreateApproval, apiUploadApprovalImage, apiMyApprovals } from '../../services/api'
 import './index.scss'
 
@@ -21,8 +21,10 @@ function ApprovalCreate() {
   const [members, setMembers] = useState([])
   const [loading, setLoading] = useState(false)
   const [images, setImages] = useState([])
+  const [needCount, setNeedCount] = useState(0)
 
   const group = useMemo(() => myGroups.find((g) => g.id === groupId) || myGroups[0], [myGroups, groupId])
+  const totalMembers = members.length
 
   useEffect(() => {
     const load = async () => {
@@ -89,6 +91,7 @@ function ApprovalCreate() {
         category,
         description: description.trim(),
         alternative: alternative.trim(),
+        needCount,
       })
 
       // 逐个上传图片（WeChat uploadFile 一次一个文件），失败单张不阻断
@@ -205,6 +208,35 @@ function ApprovalCreate() {
             onInput={(event) => setAlternative(event.detail.value)}
           />
           <View className='cat-tags__hint'>填写后，若审批被驳回会展示该替代建议</View>
+        </View>
+
+        <View className='field'>
+          <View className='label'>通过规则</View>
+          <View className='cat-tags'>
+            <View
+              className={`cat-tag ${needCount === 0 ? 'cat-tag--active' : ''}`}
+              onClick={() => setNeedCount(0)}
+            >
+              默认（>50%）
+            </View>
+            {Array.from({ length: totalMembers }).map((_, i) => {
+              const n = i + 1
+              return (
+                <View
+                  key={n}
+                  className={`cat-tag ${needCount === n ? 'cat-tag--active' : ''}`}
+                  onClick={() => setNeedCount(n)}
+                >
+                  {n} 人
+                </View>
+              )
+            })}
+          </View>
+          <View className='cat-tags__hint'>
+            {needCount === 0
+              ? `需超过 ${needForCount(totalMembers, 0)} 人通过（超过审批人数的 50%）`
+              : `需 ${needCount} 人通过`}
+          </View>
         </View>
 
         <View className='field'>

@@ -74,6 +74,7 @@ function useDailyQuote(active) {
 
 function Home() {
   const homeTheme = useAppStore((state) => state.homeTheme)
+  const setHomeTheme = useAppStore((state) => state.setHomeTheme)
   const histories = useAppStore((state) => state.histories)
   const approvalItems = useAppStore((state) => state.approvalItems)
   const ledgerRecords = useAppStore((state) => state.ledgerRecords)
@@ -120,6 +121,13 @@ function Home() {
   const quote = useDailyQuote(homeTheme === 'divination')
 
   const go = (url) => Taro.navigateTo({ url })
+
+  // 首页主题切换：记账 / 占卜 / 审批 循环
+  const HOME_THEMES = ['ledger', 'divination', 'approval']
+  const cycleTheme = () => {
+    const next = HOME_THEMES[(HOME_THEMES.indexOf(homeTheme) + 1) % HOME_THEMES.length]
+    setHomeTheme(next)
+  }
 
   const renderLedger = () => (
     <View>
@@ -256,9 +264,9 @@ function Home() {
   const renderApproval = () => (
     <View>
       <View className='hero'>
-        <Text className='eyebrow'>审批 · 理性消费</Text>
-        <View className='title'>你真的要吗？</View>
-        <View className='subtitle'>发布想买的物品，邀请好友投票，帮你冷静一下。</View>
+        <Text className='eyebrow'>审批 · 理性消费/决断</Text>
+        <View className='title'>你真的想吗？</View>
+        <View className='subtitle'>做决定前，邀请好友投票，帮你冷静一下。</View>
       </View>
 
       <View className='home-panel'>
@@ -314,6 +322,10 @@ function Home() {
 
   return (
     <View className='page home-page page--with-tabbar'>
+      <View className='home-theme-toggle' onClick={cycleTheme}>
+        <Text className='home-theme-toggle__label'>{homeTheme === 'ledger' ? '记账' : homeTheme === 'divination' ? '占卜' : '审批'}</Text>
+        <Text className='home-theme-toggle__arrow'>⇄</Text>
+      </View>
       {homeTheme === 'ledger' && renderLedger()}
       {homeTheme === 'divination' && renderDivination()}
       {homeTheme === 'approval' && renderApproval()}
